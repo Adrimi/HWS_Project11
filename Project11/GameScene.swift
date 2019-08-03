@@ -37,7 +37,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for x in 0...5 {
             makeBouncer(at: CGPoint(x: x * 256, y: 0))
         }
-                
+        
         // conform to contact delegate
         physicsWorld.contactDelegate = self
     }
@@ -128,10 +128,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        if contact.bodyA.node?.name == "ball" {
-            collision(between: contact.bodyA.node!, object: contact.bodyB.node!)
-        } else if contact.bodyB.node?.name == "ball" {
-            collision(between: contact.bodyB.node!, object: contact.bodyA.node!)
+        
+        guard let nodeA = contact.bodyA.node else { return }
+        guard let noteB = contact.bodyB.node else { return }
+        
+        if nodeA.name == "ball" {
+            collision(between: nodeA, object: noteB)
+        } else if noteB.name == "ball" {
+            collision(between: noteB, object: nodeA)
         }
         
         // there is no need to support ball-to-ball contact
