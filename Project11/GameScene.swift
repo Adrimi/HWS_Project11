@@ -33,6 +33,10 @@ class GameScene: SKScene {
         for x in 0...5 {
             makeBouncer(at: CGPoint(x: x * 256, y: 0))
         }
+        
+        for x in 0...5 {
+            makeSlot(at: CGPoint(x: x * 256 + 128, y: 0), isGood: x % 2 == 0 ? true : false)
+        }
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -66,5 +70,29 @@ class GameScene: SKScene {
         // always stay in one place!
         bouncer.physicsBody?.isDynamic = false
         addChild(bouncer)
+    }
+    
+    func makeSlot(at position: CGPoint, isGood: Bool) {
+        var slotBase: SKSpriteNode
+        var slotGlow: SKSpriteNode
+        
+        if isGood {
+            slotBase = SKSpriteNode(imageNamed: "slotBaseGood")
+            slotGlow = SKSpriteNode(imageNamed: "slotGlowGood")
+        } else {
+            slotBase = SKSpriteNode(imageNamed: "slotBaseBad")
+            slotGlow = SKSpriteNode(imageNamed: "slotGlowBad")
+        }
+        
+        slotBase.position = position
+        slotGlow.position = position
+        
+        addChild(slotGlow)
+        addChild(slotBase)
+        
+        // spinnning code
+        let spin = SKAction.rotate(byAngle: .pi, duration: 10)
+        let spinForever = SKAction.repeatForever(spin)
+        slotGlow.run(spinForever)
     }
 }
