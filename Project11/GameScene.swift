@@ -31,7 +31,7 @@ class GameScene: SKScene {
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         
         for x in 0...5 {
-//            makeBouncer(at: CGPoint(x: x * 256, y: 0))
+            makeBouncer(at: CGPoint(x: x * 256, y: 0))
         }
     }
 
