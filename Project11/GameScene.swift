@@ -30,13 +30,9 @@ class GameScene: SKScene {
         // register physics, the area of active physics is whole scene!
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         
-        
-        let bouncer = SKSpriteNode(imageNamed: "bouncer")
-        bouncer.position = CGPoint(x: 512, y: 0)
-        bouncer.physicsBody = SKPhysicsBody(circleOfRadius: bouncer.size.width / 2.0)
-        // always stay in one place!
-        bouncer.physicsBody?.isDynamic = false
-        addChild(bouncer)
+        for x in 0...5 {
+//            makeBouncer(at: CGPoint(x: x * 256, y: 0))
+        }
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -61,5 +57,14 @@ class GameScene: SKScene {
         
         // register to main view
         addChild(ball)
+    }
+    
+    func makeBouncer(at position: CGPoint) {
+        let bouncer = SKSpriteNode(imageNamed: "bouncer")
+        bouncer.position = position
+        bouncer.physicsBody = SKPhysicsBody(circleOfRadius: bouncer.size.width / 2.0)
+        // always stay in one place!
+        bouncer.physicsBody?.isDynamic = false
+        addChild(bouncer)
     }
 }
