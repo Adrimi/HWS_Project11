@@ -14,6 +14,7 @@
 		F002E24F22F5634900A7944E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F002E24D22F5634900A7944E /* Main.storyboard */; };
 		F002E25122F5634C00A7944E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F002E25022F5634C00A7944E /* Assets.xcassets */; };
 		F002E25422F5634C00A7944E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F002E25222F5634C00A7944E /* LaunchScreen.storyboard */; };
+		F0FDC8F322F89EA100944810 /* FireParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = F0FDC8F222F89EA100944810 /* FireParticles.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		F002E25022F5634C00A7944E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F002E25322F5634C00A7944E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F002E25522F5634C00A7944E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F0FDC8F222F89EA100944810 /* FireParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FireParticles.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				F002E25022F5634C00A7944E /* Assets.xcassets */,
 				F002E25222F5634C00A7944E /* LaunchScreen.storyboard */,
 				F002E25522F5634C00A7944E /* Info.plist */,
+				F0FDC8F222F89EA100944810 /* FireParticles.sks */,
 			);
 			path = Project11;
 			sourceTree = "<group>";
@@ -130,6 +133,7 @@
 			files = (
 				F002E24F22F5634900A7944E /* Main.storyboard in Resources */,
 				F002E24622F5634900A7944E /* GameScene.sks in Resources */,
+				F0FDC8F322F89EA100944810 /* FireParticles.sks in Resources */,
 				F002E25122F5634C00A7944E /* Assets.xcassets in Resources */,
 				F002E25422F5634C00A7944E /* LaunchScreen.storyboard in Resources */,
 			);
