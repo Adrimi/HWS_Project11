@@ -10,6 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
+    let colors = ["Blue", "Cyan", "Green", "Grey", "Purple", "Red", "Yellow"]
     var scoreLabel: SKLabelNode!
     var score = 0 {
         didSet {
@@ -71,8 +72,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // where it was tapped (get the location)
         let location = touch.location(in: self)
         
+        // create ball names
+        let balls = colors.map { "ball\($0)" }
+        
         // create view based on image(and alpha)
-        let ball = SKSpriteNode(imageNamed: "ballRed")
+        let ball = SKSpriteNode(imageNamed: balls.randomElement() ?? "ballBlue")
         
         // add physics
         ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width / 2.0)
