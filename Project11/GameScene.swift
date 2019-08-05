@@ -10,8 +10,35 @@ import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
+    var scoreLabel: SKLabelNode!
+    var score = 0 {
+        didSet {
+            scoreLabel.text = "Score: \(score)"
+        }
+    }
+    
     override func didMove(to view: SKView) {
+        addBackground()
+        addScoreLabel()
         
+        // conform to contact delegate
+        physicsWorld.contactDelegate = self
+        
+        // register physics, the area of active physics is whole scene!
+        physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
+
+        // spawn slots
+        for x in 0..<5 {
+            makeSlot(at: CGPoint(x: x * 256 + 128, y: 0), isGood: x % 2 == 0 ? true : false)
+        }
+        
+        // spawn bouncers
+        for x in 0...5 {
+            makeBouncer(at: CGPoint(x: x * 256, y: 0))
+        }
+    }
+    
+    func addBackground() {
         // create background
         let background = SKSpriteNode(imageNamed: "background")
         
@@ -26,20 +53,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // register background
         addChild(background)
-        
-        // register physics, the area of active physics is whole scene!
-        physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
-
-        for x in 0..<5 {
-            makeSlot(at: CGPoint(x: x * 256 + 128, y: 0), isGood: x % 2 == 0 ? true : false)
-        }
-        
-        for x in 0...5 {
-            makeBouncer(at: CGPoint(x: x * 256, y: 0))
-        }
-        
-        // conform to contact delegate
-        physicsWorld.contactDelegate = self
+    }
+    
+    func addScoreLabel() {
+        scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
+        scoreLabel.text = "Score: 0"
+        scoreLabel.horizontalAlignmentMode = .right
+        scoreLabel.position = CGPoint(x: 900, y: 700)
+        addChild(scoreLabel)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -118,8 +139,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func collision(between ball: SKNode, object: SKNode) {
         if object.name == "good" {
             destroy(ball: ball)
+            score += 1
         } else if object.name == "bad" {
             destroy(ball: ball)
+            score -= 1
         }
     }
     
