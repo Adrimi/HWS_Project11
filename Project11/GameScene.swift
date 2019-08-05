@@ -27,11 +27,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+    var ballCountLabel: SKLabelNode!
+    var ballCount = 5 {
+        didSet {
+            ballCountLabel.text = "Balls: \(ballCount)"
+        }
+    }
     
     override func didMove(to view: SKView) {
         addBackground()
         addScoreLabel()
         addEditLabel()
+        addBallCountLabel()
         
         // conform to contact delegate
         physicsWorld.contactDelegate = self
@@ -82,6 +89,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         editLabel.position = CGPoint(x: 100, y: 700)
         addChild(editLabel)
     }
+    
+    func addBallCountLabel() {
+        ballCountLabel = SKLabelNode(fontNamed: "ChalkDuster")
+        ballCountLabel.text = "Balls: 5"
+        ballCountLabel.horizontalAlignmentMode = .center
+        ballCountLabel.position = CGPoint(x: 500, y: 700)
+        addChild(ballCountLabel)
+    }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
@@ -96,7 +111,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if object.contains(editLabel) {
             editingMode.toggle()
         } else {
-            spawnBall(on: location)
+            if editingMode {
+                spawnObstacles(on: location)
+            } else {
+                if ballCount > 0 {
+                    spawnBall(on: location)
+                    ballCount -= 1
+                } else {
+                    //showAlert()
+                }
+            }
         }
     }
     
@@ -119,13 +143,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ball.physicsBody?.contactTestBitMask = ball.physicsBody?.collisionBitMask ?? 0
         
         // relocate
-        ball.position = CGPoint(x: location.x, y: CGFloat.random(in: 700...750))
+        ball.position = CGPoint(x: Int(location.x) , y: Int.random(in: 700...750))
         
         // name to ball
         ball.name = "ball"
         
         // register to main view
         addChild(ball)
+    }
+    
+    func spawnObstacles(on location: CGPoint) {
+        let size = CGSize(width: Int.random(in: 16...128), height: 16)
+        let box = SKSpriteNode(color: UIColor(red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1), alpha: 1), size: size)
+        box.zRotation = CGFloat.random(in: 0...3)
+        box.position = location
+        
+        box.physicsBody = SKPhysicsBody(rectangleOf: box.size)
+        box.physicsBody?.isDynamic = false
+        
+        addChild(box)
     }
     
     func makeBouncer(at position: CGPoint) {
@@ -173,9 +209,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if object.name == "good" {
             destroy(ball: ball)
             score += 1
+            ballCount += 1
         } else if object.name == "bad" {
             destroy(ball: ball)
             score -= 1
+            
+            // show instantaneously alert about losted game
+            if ballCount <= 0 {
+                showAlert()
+            }
         }
     }
     
@@ -201,5 +243,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         // there is no need to support ball-to-ball contact
+    }
+    
+    func showAlert() {
+        let ac = UIAlertController(title: "Game Over", message: "You have scored \(score) points.", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        
+        // take a DEEP dive to this viewController to present xd
+        scene?.view?.window?.rootViewController?.present(ac, animated: true)
     }
 }
