@@ -17,10 +17,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             scoreLabel.text = "Score: \(score)"
         }
     }
+    var editLabel: SKLabelNode!
+    var editingMode: Bool = false {
+        didSet {
+            if editingMode {
+                editLabel.text = "Done"
+            } else {
+                editLabel.text = "Edit"
+            }
+        }
+    }
     
     override func didMove(to view: SKView) {
         addBackground()
         addScoreLabel()
+        addEditLabel()
         
         // conform to contact delegate
         physicsWorld.contactDelegate = self
@@ -63,6 +74,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.position = CGPoint(x: 900, y: 700)
         addChild(scoreLabel)
     }
+    
+    func addEditLabel() {
+        editLabel = SKLabelNode(fontNamed: "Chalkduster")
+        editLabel.text = "Edit"
+        editLabel.horizontalAlignmentMode = .left
+        editLabel.position = CGPoint(x: 100, y: 700)
+        addChild(editLabel)
+    }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
@@ -72,6 +91,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // where it was tapped (get the location)
         let location = touch.location(in: self)
         
+        // check if player tapped on editLabel
+        let object = nodes(at: location)
+        if object.contains(editLabel) {
+            editingMode.toggle()
+        } else {
+            spawnBall(on: location)
+        }
+    }
+    
+    func spawnBall(on location: CGPoint) {
         // create ball names
         let balls = colors.map { "ball\($0)" }
         
@@ -90,7 +119,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ball.physicsBody?.contactTestBitMask = ball.physicsBody?.collisionBitMask ?? 0
         
         // relocate
-        ball.position = location
+        ball.position = CGPoint(x: location.x, y: CGFloat.random(in: 700...750))
         
         // name to ball
         ball.name = "ball"
